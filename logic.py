@@ -11,6 +11,8 @@ class Pokemon:
         self.experience = 0
         self.hunger = 50  # Начальный уровень сытости (0–100)
         self.is_rare = False
+        self.hp = 100  # Здоровье
+        self.power = 10  # Сила
         
         # Получаем данные из API
         data = self.fetch_data()
@@ -85,5 +87,38 @@ class Pokemon:
 
     def add_achievement(self):
         return f"Поздравляем! Вы получили достижение за владение редким покемоном: {self.name}!"
+    
+    def heal(self, amount):
+        self.hp += amount
+        if self.hp > 100:
+            self.hp = 100
+        return f"Здоровье покемона восстановлено на {amount} единиц."
 
+class Wizard(Pokemon):
+    def __init__(self, pokemon_trainer):
+        super().__init__(pokemon_trainer)
+        self.hp = 120  # Здоровье
+        self.power = 15  # Сила
+
+    def info(self):
+        return "У тебя покемон-волшебник\n" + super().info()
+
+    def attack(self, enemy):
+        return super().attack(enemy)
+
+class Fighter(Pokemon):
+    def __init__(self, pokemon_trainer):
+        super().__init__(pokemon_trainer)
+        self.hp = 90  # Здоровье
+        self.power = 20  # Сила
+
+    def info(self):
+        return "У тебя покемон-боец\n" + super().info()
+
+    def attack(self, enemy):
+        super_power = randint(5, 15)
+        self.power += super_power
+        result = super().attack(enemy)
+        self.power -= super_power
+        return result + f"\nБоец применил супер-атаку силой: {super_power} "
 
